@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 4 · Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F5F1;--card:#fff;--ink:#18242F;--muted:#5B6873;--rule:#D9DFD8;--accent:#1E5A86;--soft:#E3EDF5;--mark:#E6F07A;--markInk:#18242F;
+--ok:#2C7A4B;--okSoft:#E2F2E8;--mid:#9A6B00;--midSoft:#FBF1D6;--bad:#B4383B;--badSoft:#F8E4E3;--adv:#7A3E8C;--advSoft:#F1E6F5;
+--ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;--word:"Gentium Book Plus","Charis SIL",Georgia,serif;--shadow:0 1px 2px rgba(24,36,47,.06),0 6px 18px rgba(24,36,47,.07)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12191F;--card:#1A232B;--ink:#E7ECEF;--muted:#9AA7B1;--rule:#2C3842;--accent:#7DB3DE;--soft:#1E3344;--mark:#5D6420;--markInk:#F2F5D0;--ok:#6BC891;--okSoft:#183427;--mid:#E3B95A;--midSoft:#3A3018;--bad:#F08A86;--badSoft:#3A1F21;--adv:#D3A2E3;--advSoft:#33233B;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12191F;--card:#1A232B;--ink:#E7ECEF;--muted:#9AA7B1;--rule:#2C3842;--accent:#7DB3DE;--soft:#1E3344;--mark:#5D6420;--markInk:#F2F5D0;--ok:#6BC891;--okSoft:#183427;--mid:#E3B95A;--midSoft:#3A3018;--bad:#F08A86;--badSoft:#3A1F21;--adv:#D3A2E3;--advSoft:#33233B;--shadow:none;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--ui);padding:20px 16px 90px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:999px;padding:3px 10px;background:var(--soft);color:var(--accent)}.pill.cur{background:var(--accent);color:var(--card)}
+h1{font-family:var(--word);font-size:clamp(28px,6vw,38px);line-height:1.2;margin:6px 0 4px}
+.sub{color:var(--muted);margin:0}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;min-width:64px}
+.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:var(--card);color:var(--ink);padding:7px 12px;font:600 14px var(--ui);cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--card)}
+select{font:inherit;font-size:14px;padding:6px 8px;border-radius:8px;border:1.5px solid var(--rule);background:var(--card);color:var(--ink);max-width:100%}
+.b{border:1.5px solid var(--rule);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 12px;font:600 14px var(--ui);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.b:disabled{opacity:.45;cursor:default}.b.primary{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.b.rec{border-color:var(--bad);color:var(--bad)}.b.rec.on{background:var(--bad);color:var(--card)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{border-radius:10px;padding:8px 10px;text-align:center;font-size:13px;font-weight:600}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.s3{background:var(--okSoft);color:var(--ok)}.s2{background:var(--midSoft);color:var(--mid)}.s1{background:var(--badSoft);color:var(--bad)}.s0{background:var(--soft);color:var(--accent)}
+.bar{height:8px;border-radius:99px;background:var(--rule);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.count{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.stage{perspective:1400px}
+.fc{position:relative;min-height:330px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s ease;outline:none}
+.fc.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);padding:22px 22px 18px;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.back{transform:rotateY(180deg)}
+.front{align-items:center;justify-content:center;text-align:center}
+.grp{font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--advSoft);color:var(--adv);align-self:center}
+.big{font-family:var(--word);font-size:clamp(30px,8vw,46px);font-weight:700;line-height:1.15}
+.ipa{font-family:var(--word);font-size:20px;color:var(--accent)}
+.pos{font-size:12px;font-weight:700;color:var(--muted)}
+.tap{font-size:13px;color:var(--muted);margin-top:auto}
+.sent{font-family:var(--word);font-size:clamp(20px,5vw,26px);line-height:1.5}
+.gap{display:inline-block;min-width:110px;border-bottom:3px solid var(--accent);color:transparent}
+.hl{background:var(--mark);color:var(--markInk);border-radius:4px;padding:0 3px}
+.vi{color:var(--muted);font-size:15px}
+.gloss{font-size:22px;font-weight:700;color:var(--ok)}
+.ex{font-family:var(--word);font-size:18px}
+.box{border-radius:10px;padding:8px 12px;font-size:14.5px}.use{background:var(--midSoft)}.rel{background:var(--soft)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.res{font-size:14.5px;border-radius:10px;padding:8px 12px;background:var(--card);border:1px solid var(--rule)}
+.res .miss{color:var(--bad);font-weight:700}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{border-radius:12px;border:2px solid transparent;padding:10px 6px;font:700 14px var(--ui);cursor:pointer}
+.r1{background:var(--badSoft);color:var(--bad)}.r2{background:var(--midSoft);color:var(--mid)}.r3{background:var(--okSoft);color:var(--ok)}
+.rate button:focus-visible,.b:focus-visible,.seg button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.nav{display:flex;justify-content:space-between;gap:8px}
+.done{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.keys{font-size:13px;color:var(--muted)}
+kbd{font:600 12px var(--ui);border:1px solid var(--rule);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--card)}
+details summary{cursor:pointer;font-weight:700}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;margin-top:10px}
+.li{display:flex;gap:8px;align-items:center;border:1px solid var(--rule);border-radius:8px;padding:6px 8px;background:var(--card);cursor:pointer;font-size:14px;text-align:left;color:var(--ink);font-family:var(--ui)}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}.d0{background:var(--rule)}.d1{background:var(--bad)}.d2{background:var(--mid)}.d3{background:var(--ok)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;max-width:90%}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.fc{min-height:360px}}
+@media (prefers-reduced-motion:reduce){.fc{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="pills"><span class="pill">Unit 4 · Image</span><span class="pill cur">Flashcards · Tự học từ vựng</span></div>
+  <h1>Unit 4 · Flashcards</h1>
+  <p class="sub">25 từ và cụm từ của Unit 4 trên thẻ nhớ. Học bằng thẻ từ, thẻ câu và thẻ dịch câu; nghe mẫu, ghi âm giọng của bạn và nghe lại. Trang không cần nộp bài, tiến độ được lưu trên máy của bạn.</p>
+</header>
+
+<section class="panel" aria-label="Cài đặt">
+  <div class="row" style="margin-bottom:10px"><span class="lbl">Loại thẻ</span>
+    <div class="seg" id="modeSeg" role="tablist">
+      <button data-m="word" class="on">🃏 Thẻ từ</button><button data-m="sent">📝 Thẻ câu</button><button data-m="trans">🔁 Dịch câu</button>
+    </div></div>
+  <div class="row" style="margin-bottom:10px"><span class="lbl">Bộ thẻ</span><select id="deckSel"></select>
+    <button class="b" id="shufBtn" aria-pressed="false">🔀 Xáo thẻ</button></div>
+  <div class="row"><span class="lbl">Giọng</span><select id="voiceSel"><option>Đang tải giọng…</option></select>
+    <label class="count">Tốc độ <input id="rate" type="range" min="0.6" max="1.1" step="0.05" value="0.9" style="vertical-align:middle;accent-color:var(--accent)"> <span id="rateV">0.9</span></label></div>
+  <p class="count" id="modeHelp" style="margin:10px 0 0"></p>
+</section>
+
+<section class="panel" aria-label="Tiến độ">
+  <div class="stats">
+    <div class="stat s3"><b id="n3">0</b>Nhớ rồi</div><div class="stat s2"><b id="n2">0</b>Hơi nhớ</div>
+    <div class="stat s1"><b id="n1">0</b>Chưa nhớ</div><div class="stat s0"><b id="n0">0</b>Chưa học</div>
+  </div>
+  <div class="bar"><i id="barFill"></i></div>
+</section>
+
+<section id="studyArea">
+  <div class="row" style="justify-content:space-between;margin-bottom:8px"><span class="count" id="posTxt"></span><span class="count" id="deckTxt"></span></div>
+  <div class="stage"><div class="fc" id="card" tabindex="0" role="button" aria-label="Thẻ nhớ, bấm để lật">
+    <div class="face front" id="front"></div><div class="face back" id="back"></div>
+  </div></div>
+  <div class="tools" style="margin-top:12px">
+    <button class="b" id="sayBtn">🔊 Nghe mẫu</button><button class="b" id="slowBtn">🐢 Chậm</button>
+    <button class="b rec" id="recBtn">🎙 Ghi âm</button><button class="b" id="playBtn" disabled>▶ Nghe lại giọng tôi</button>
+    <button class="b" id="flipBtn">↻ Lật thẻ</button>
+  </div>
+  <div class="res" id="recRes" hidden style="margin-top:10px"></div>
+  <div class="rate" id="rateBox" style="margin-top:12px" hidden>
+    <button class="r1" data-r="1">😕 Chưa nhớ</button><button class="r2" data-r="2">🤔 Hơi nhớ</button><button class="r3" data-r="3">😀 Nhớ rồi</button>
+  </div>
+  <div class="nav" style="margin-top:12px"><button class="b" id="prevBtn">← Thẻ trước</button><button class="b" id="nextBtn">Thẻ sau →</button></div>
+  <p class="keys" style="text-align:center">Phím tắt: <kbd>Space</kbd> lật · <kbd>←</kbd> <kbd>→</kbd> chuyển thẻ · <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> tự đánh giá · <kbd>R</kbd> ghi âm · <kbd>S</kbd> nghe mẫu</p>
+</section>
+
+<section class="panel done" id="doneBox" hidden>
+  <div style="font-size:44px">🎉</div><h2 style="margin:0">Xong một vòng!</h2>
+  <p id="doneTxt" style="margin:0"></p>
+  <div class="row" style="justify-content:center"><button class="b primary" id="againHard">Ôn lại thẻ chưa nhớ</button><button class="b" id="againAll">Học lại cả bộ</button></div>
+</section>
+
+<section class="panel"><details><summary>📋 Danh sách 25 từ và trạng thái (bấm một từ để học ngay)</summary><div class="list" id="list"></div>
+  <p class="count" style="margin:10px 0 0"><button class="b" id="resetBtn">↺ Xóa tiến độ của loại thẻ này</button></p></details></section>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script>
+const DATA = {"cards": [{"w": "brand image", "ipa": "/ˌbrænd ˈɪmɪdʒ/", "pos": "n", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "hình ảnh thương hiệu", "ex": "Our brand image is young, fun and friendly.", "exvi": "Hình ảnh thương hiệu của chúng tôi trẻ trung, vui vẻ và thân thiện.", "use": "Dùng khi nói khách hàng nghĩ gì về công ty: <i>We need to improve our brand image.</i>", "rel": "improve / build / change a brand image · a strong brand image · <i>brand</i> (n) · <i>branding</i> (n)", "s2": "Customers think our brand image is old-fashioned, so we need a new logo.", "s2vi": "Khách hàng nghĩ hình ảnh thương hiệu của chúng ta lỗi thời, nên ta cần logo mới.", "h1": "brand image", "h2": "brand image"}, {"w": "target market", "ipa": "/ˈtɑːɡɪt ˌmɑːkɪt/", "pos": "n", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "thị trường mục tiêu", "ex": "Our target market is young professionals in big cities.", "exvi": "Thị trường mục tiêu của chúng tôi là người trẻ đi làm ở thành phố lớn.", "use": "Câu mở đầu khi thuyết trình sản phẩm: <i>Our target market is…</i>", "rel": "target market · target customers · <i>target</i> (v): The ad targets students.", "s2": "Our target market is young professionals aged 25 to 35.", "s2vi": "Thị trường mục tiêu của chúng tôi là người trẻ đi làm 25–35 tuổi.", "h1": "target market", "h2": "target market"}, {"w": "appeal to", "ipa": "/əˈpiːl tuː/", "pos": "v phr", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "thu hút, hấp dẫn (ai)", "ex": "This design will appeal to older customers.", "exvi": "Thiết kế này sẽ thu hút khách hàng lớn tuổi.", "use": "Nói sản phẩm hợp với nhóm khách nào: <i>It appeals to families with children.</i> Luôn có <b>to</b>.", "rel": "appeal to sb · <i>appealing</i> (adj) · have wide appeal", "s2": "The bright colours will appeal to children.", "s2vi": "Màu sắc tươi sáng sẽ thu hút trẻ em.", "h1": "appeal to", "h2": "appeal to"}, {"w": "promote", "ipa": "/prəˈməʊt/", "pos": "v", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "quảng bá", "ex": "We promote our new products on social media.", "exvi": "Chúng tôi quảng bá sản phẩm mới trên mạng xã hội.", "use": "Dùng trong họp marketing: <i>How can we promote it?</i> Danh từ: <b>promotion</b> (khuyến mãi / sự quảng bá).", "rel": "promote a product / a brand · <i>promotion</i> (n) · <i>promotional</i> (adj)", "s2": "We will promote the new drink with free samples in supermarkets.", "s2vi": "Chúng tôi sẽ quảng bá đồ uống mới bằng hàng mẫu miễn phí ở siêu thị.", "h1": "promote", "h2": "promote"}, {"w": "advertising campaign", "ipa": "/ˈædvətaɪzɪŋ kæmˌpeɪn/", "pos": "n", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "chiến dịch quảng cáo", "ex": "The new advertising campaign starts in March.", "exvi": "Chiến dịch quảng cáo mới bắt đầu vào tháng Ba.", "use": "Báo cáo kế hoạch: <i>We will launch an advertising campaign next month.</i>", "rel": "launch / run an advertising campaign · <i>advertise</i> (v) · <i>advertisement / ad</i> (n)", "s2": "The company spent $2 million on its new advertising campaign.", "s2vi": "Công ty chi 2 triệu đô cho chiến dịch quảng cáo mới.", "h1": "advertising campaign", "h2": "advertising campaign"}, {"w": "publicity", "ipa": "/pʌbˈlɪsəti/", "pos": "n (U)", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "sự chú ý của công chúng, truyền thông", "ex": "The fashion show created a lot of publicity.", "exvi": "Buổi trình diễn thời trang thu hút rất nhiều sự chú ý.", "use": "Khác <i>advertising</i> (trả tiền quảng cáo): publicity là được báo chí, mọi người nói đến. Không đếm được.", "rel": "a lot of / good / bad publicity · generate publicity · <i>publicise</i> (v)", "s2": "The famous actress at the launch brought a lot of publicity.", "s2vi": "Nữ diễn viên nổi tiếng ở buổi ra mắt mang lại rất nhiều sự chú ý.", "h1": "publicity", "h2": "publicity"}, {"w": "value for money", "ipa": "/ˌvæljuː fə ˈmʌni/", "pos": "phrase", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "đáng đồng tiền", "ex": "IKEA furniture is good value for money.", "exvi": "Đồ nội thất IKEA rất đáng đồng tiền.", "use": "So sánh lựa chọn: <i>Option B is better value for money.</i> \"Đáng tiền\" không nhất thiết là rẻ.", "rel": "good / great / better value for money", "s2": "This laptop is not cheap, but it is good value for money.", "s2vi": "Chiếc laptop này không rẻ, nhưng rất đáng tiền.", "h1": "value for money", "h2": "value for money"}, {"w": "domestic market", "ipa": "/dəˌmestɪk ˈmɑːkɪt/", "pos": "n", "grp": "Từ trong sách (Intelligent Business, Unit 4)", "gloss": "thị trường trong nước", "ex": "Most of our sales come from the domestic market.", "exvi": "Phần lớn doanh số của chúng tôi đến từ thị trường trong nước.", "use": "Báo cáo kinh doanh: trái nghĩa <i>overseas / export market</i> (thị trường nước ngoài).", "rel": "domestic market · domestic sales · overseas market · export", "s2": "80% of our sales are in the domestic market, but we also export to Japan.", "s2vi": "80% doanh số của chúng tôi ở thị trường trong nước, nhưng chúng tôi cũng xuất khẩu sang Nhật.", "h1": "domestic market", "h2": "domestic market"}, {"w": "come up with", "ipa": "/ˌkʌm ˈʌp wɪð/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "nghĩ ra (ý tưởng)", "ex": "The team came up with a great name for the product.", "exvi": "Nhóm đã nghĩ ra một cái tên tuyệt vời cho sản phẩm.", "use": "Trong brainstorm: <i>Can we come up with three new ideas?</i>", "rel": "come up with an idea / a plan / a solution / a name", "s2": "We need to come up with a new name for the product.", "s2vi": "Chúng ta cần nghĩ ra một cái tên mới cho sản phẩm.", "h1": "came up with", "h2": "come up with"}, {"w": "bring out", "ipa": "/ˌbrɪŋ ˈaʊt/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "tung ra (sản phẩm mới)", "ex": "The company brings out a new model every year.", "exvi": "Công ty tung ra mẫu mới mỗi năm.", "use": "Nói về sản phẩm mới: <i>We are bringing out a cheaper version in May.</i>", "rel": "bring out a new model / product / version / range", "s2": "Apple usually brings out a new iPhone every September.", "s2vi": "Apple thường tung ra iPhone mới vào tháng Chín hằng năm.", "h1": "brings out", "h2": "brings out"}, {"w": "stand out (from)", "ipa": "/ˌstænd ˈaʊt frɒm/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "nổi bật (so với)", "ex": "Bright colours help our packaging stand out from the competition.", "exvi": "Màu sắc tươi sáng giúp bao bì của chúng tôi nổi bật so với đối thủ.", "use": "Giải thích điểm khác biệt: <i>What makes our product stand out?</i>", "rel": "stand out from the competition / the crowd · <i>outstanding</i> (adj)", "s2": "Our red packaging helps the product stand out on the shelf.", "s2vi": "Bao bì màu đỏ giúp sản phẩm nổi bật trên kệ.", "h1": "stand out", "h2": "stand out"}, {"w": "take off", "ipa": "/ˌteɪk ˈɒf/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "thành công nhanh, bán chạy", "ex": "Sales really took off after the TV advert.", "exvi": "Doanh số tăng vọt sau quảng cáo trên TV.", "use": "Kể lại thành công: <i>The product took off in the first month.</i> (Nghĩa khác: máy bay cất cánh.)", "rel": "sales take off · a business takes off · <i>take-off</i> (n)", "s2": "After the TV advert, sales of the drink really took off.", "s2vi": "Sau quảng cáo trên TV, doanh số đồ uống tăng vọt.", "h1": "took off", "h2": "took off"}, {"w": "catch on", "ipa": "/ˌkætʃ ˈɒn/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "trở nên phổ biến, được ưa chuộng", "ex": "The idea of online shopping caught on very quickly.", "exvi": "Ý tưởng mua sắm trực tuyến trở nên phổ biến rất nhanh.", "use": "Nói một xu hướng mới: <i>Do you think this trend will catch on?</i>", "rel": "an idea / a trend / a fashion catches on", "s2": "Online shopping caught on very quickly in Vietnam.", "s2vi": "Mua sắm trực tuyến trở nên phổ biến rất nhanh ở Việt Nam.", "h1": "caught on", "h2": "caught on"}, {"w": "roll out", "ipa": "/ˌrəʊl ˈaʊt/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "triển khai, tung ra dần (nhiều nơi)", "ex": "We will roll out the new app in three cities first.", "exvi": "Chúng tôi sẽ triển khai ứng dụng mới ở ba thành phố trước.", "use": "Dùng khi tung sản phẩm/dịch vụ theo từng giai đoạn: <i>The service will roll out next year.</i>", "rel": "roll out a product / a service / an update · a roll-out (n)", "s2": "The bank will roll out the new app in three cities first.", "s2vi": "Ngân hàng sẽ triển khai ứng dụng mới ở ba thành phố trước.", "h1": "roll out", "h2": "roll out"}, {"w": "cut back on", "ipa": "/ˌkʌt ˈbæk ɒn/", "pos": "phr v", "grp": "Phrasal verbs (cụm động từ)", "gloss": "cắt giảm (chi tiêu)", "ex": "When the economy is down, people cut back on luxury goods.", "exvi": "Khi kinh tế đi xuống, người ta cắt giảm hàng xa xỉ.", "use": "Phân tích thị trường: <i>Customers are cutting back on spending.</i>", "rel": "cut back on spending / costs / advertising", "s2": "When prices go up, people cut back on luxury goods.", "s2vi": "Khi giá tăng, người ta cắt giảm hàng xa xỉ.", "h1": "cut back on", "h2": "cut back on"}, {"w": "launch a product", "ipa": "/ˌlɔːntʃ ə ˈprɒdʌkt/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "ra mắt sản phẩm", "ex": "We plan to launch the product before Christmas.", "exvi": "Chúng tôi dự định ra mắt sản phẩm trước Giáng sinh.", "use": "Kế hoạch marketing: <i>When are we launching the product?</i> Danh từ: <i>a product launch</i>.", "rel": "launch a product / a brand / a campaign · a product launch (n)", "s2": "We are going to launch the product at the trade fair in Hanoi.", "s2vi": "Chúng tôi sẽ ra mắt sản phẩm tại hội chợ thương mại ở Hà Nội.", "h1": "launch the product", "h2": "launch the product"}, {"w": "build a brand", "ipa": "/ˌbɪld ə ˈbrænd/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "xây dựng thương hiệu", "ex": "It takes many years to build a strong brand.", "exvi": "Phải mất nhiều năm để xây dựng một thương hiệu mạnh.", "use": "Nói chiến lược dài hạn: <i>Good service helps us build our brand.</i>", "rel": "build a brand · brand loyalty · brand awareness", "s2": "It takes years to build a strong brand.", "s2vi": "Phải mất nhiều năm để xây dựng một thương hiệu mạnh.", "h1": "build a strong brand", "h2": "build a strong brand"}, {"w": "create a buzz", "ipa": "/kriˌeɪt ə ˈbʌz/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "tạo tiếng vang, gây chú ý", "ex": "The free samples created a buzz on social media.", "exvi": "Hàng mẫu miễn phí đã tạo tiếng vang trên mạng xã hội.", "use": "Tên của Unit 4: <i>Creating a buzz</i>. Dùng khi muốn mọi người bàn tán về sản phẩm.", "rel": "create / generate a buzz · a buzz around a product", "s2": "The mystery video created a buzz before the launch.", "s2vi": "Đoạn video bí ẩn đã tạo tiếng vang trước buổi ra mắt.", "h1": "created a buzz", "h2": "created a buzz"}, {"w": "attract customers", "ipa": "/əˌtrækt ˈkʌstəməz/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "thu hút khách hàng", "ex": "Lower prices attract more customers.", "exvi": "Giá thấp hơn thu hút nhiều khách hàng hơn.", "use": "Đề xuất ý tưởng: <i>We can attract new customers with a free trial.</i>", "rel": "attract new / young customers · <i>attractive</i> (adj) · <i>attraction</i> (n)", "s2": "Free Wi-Fi helps the café attract customers.", "s2vi": "Wi-Fi miễn phí giúp quán cà phê thu hút khách.", "h1": "attract more customers", "h2": "attract customers"}, {"w": "meet customer needs", "ipa": "/ˌmiːt ˌkʌstəmə ˈniːdz/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "đáp ứng nhu cầu khách hàng", "ex": "A good product meets customer needs.", "exvi": "Sản phẩm tốt đáp ứng được nhu cầu của khách hàng.", "use": "Giải thích vì sao sản phẩm tốt: <i>This model meets the needs of small offices.</i> Động từ là <b>meet</b>.", "rel": "meet (customer) needs · meet expectations · meet a deadline (Unit 3)", "s2": "A good product must meet customer needs.", "s2vi": "Sản phẩm tốt phải đáp ứng nhu cầu khách hàng.", "h1": "meets customer needs", "h2": "meet customer needs"}, {"w": "gain market share", "ipa": "/ˌɡeɪn ˈmɑːkɪt ʃeə/", "pos": "collocation", "grp": "Collocations (từ hay đi cùng nhau)", "gloss": "tăng thị phần", "ex": "We want to gain market share in Vietnam.", "exvi": "Chúng tôi muốn tăng thị phần ở Việt Nam.", "use": "Mục tiêu kinh doanh: <i>Our aim is to gain 5% market share.</i> Trái nghĩa: <i>lose market share</i>.", "rel": "gain / lose / increase market share · a 10% market share", "s2": "The company lowered its prices to gain market share.", "s2vi": "Công ty hạ giá để tăng thị phần.", "h1": "gain market share", "h2": "gain market share"}, {"w": "top-of-the-range", "ipa": "/ˌtɒp əv ðə ˈreɪndʒ/", "pos": "adj", "grp": "Cụm marketing & kinh doanh", "gloss": "cao cấp nhất (trong dòng sản phẩm)", "ex": "This is our top-of-the-range model with all the latest features.", "exvi": "Đây là mẫu cao cấp nhất của chúng tôi với mọi tính năng mới nhất.", "use": "So sánh các phiên bản: <i>The top-of-the-range model is the most expensive.</i> Giống <i>top-end</i>.", "rel": "top-of-the-range model · top-end · entry-level (cơ bản nhất)", "s2": "This is the top-of-the-range model: it has every feature.", "s2vi": "Đây là mẫu cao cấp nhất: có đủ mọi tính năng.", "h1": "top-of-the-range", "h2": "top-of-the-range"}, {"w": "competitive price", "ipa": "/kəmˌpetətɪv ˈpraɪs/", "pos": "collocation", "grp": "Cụm marketing & kinh doanh", "gloss": "giá cạnh tranh", "ex": "We offer high quality at a competitive price.", "exvi": "Chúng tôi cung cấp chất lượng cao với giá cạnh tranh.", "use": "Câu bán hàng chuẩn: <i>…at a very competitive price.</i> Trọng âm: com-<b>PET</b>-i-tive.", "rel": "at a competitive price · competitive prices · <i>competitor</i> (n)", "s2": "We sell high-quality coffee at a competitive price.", "s2vi": "Chúng tôi bán cà phê chất lượng cao với giá cạnh tranh.", "h1": "competitive price", "h2": "competitive price"}, {"w": "word of mouth", "ipa": "/ˌwɜːd əv ˈmaʊθ/", "pos": "phrase", "grp": "Cụm marketing & kinh doanh", "gloss": "truyền miệng", "ex": "Most of our new customers find us by word of mouth.", "exvi": "Phần lớn khách mới biết đến chúng tôi qua truyền miệng.", "use": "Nói kênh quảng bá rẻ nhất: <i>Word of mouth is free advertising.</i>", "rel": "by word of mouth · word-of-mouth marketing", "s2": "We don't pay for adverts: most customers find us by word of mouth.", "s2vi": "Chúng tôi không trả tiền quảng cáo: phần lớn khách biết đến qua truyền miệng.", "h1": "word of mouth", "h2": "word of mouth"}, {"w": "unique selling point", "ipa": "/juˌniːk ˈselɪŋ pɔɪnt/", "pos": "phrase", "grp": "Cụm marketing & kinh doanh", "gloss": "điểm bán hàng độc nhất (USP)", "ex": "Its unique selling point is the ten-year guarantee.", "exvi": "Điểm bán hàng độc nhất của nó là bảo hành mười năm.", "use": "Trong thuyết trình: <i>Our unique selling point is…</i> Viết tắt <b>USP</b>.", "rel": "unique selling point (USP) · what makes it different is…", "s2": "The camera's unique selling point is that it works under water.", "s2vi": "Điểm bán hàng độc nhất của chiếc máy ảnh là nó hoạt động dưới nước.", "h1": "unique selling point", "h2": "unique selling point"}], "groups": ["Từ trong sách (Intelligent Business, Unit 4)", "Phrasal verbs (cụm động từ)", "Collocations (từ hay đi cùng nhau)", "Cụm marketing & kinh doanh"]};
+const C = DATA.cards, GROUPS = DATA.groups;
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KEY = 'u4-flashcards-v1';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(ST)); }catch(e){} }
+const ST = Object.assign({mode:'word', deck:'all', shuffle:false, box:{}, rate:0.9}, load());
+ST.box = ST.box || {};
+function toast(m, ms=3200){ const t=$('#toast'); t.textContent=m; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true, ms); }
+const plain = w => w.replace(/\s*\(.*?\)/g,'').trim();
+const HELP = {word:'Mặt trước: từ và phiên âm. Hãy nói nghĩa và thử đặt một câu, rồi lật thẻ để kiểm tra.',
+  sent:'Mặt trước: câu có chỗ trống. Đoán cụm từ còn thiếu và đọc to cả câu, rồi lật thẻ. Mỗi từ có 2 câu.',
+  trans:'Mặt trước: câu tiếng Việt. Nói câu đó bằng tiếng Anh (dùng từ của Unit 4), ghi âm, rồi lật thẻ so sánh.'};
+// items for a mode
+function itemsFor(mode){ const out=[]; C.forEach((c,i)=>{ if(mode==='word') out.push({i,s:0}); else { out.push({i,s:1}); out.push({i,s:2}); } }); return out; }
+const idOf = it => ST.mode+':'+it.i+':'+it.s;
+const boxOf = it => ST.box[idOf(it)] || 0;
+function deckItems(){ let a=itemsFor(ST.mode);
+  if(ST.deck==='review') a=a.filter(it=>{const b=boxOf(it); return b===1||b===2;});
+  else if(ST.deck!=='all') a=a.filter(it=>C[it.i].grp===GROUPS[+ST.deck]);
+  return a; }
+let Q=[], pos=0, flipped=false;
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function startDeck(list){ Q = list || deckItems(); if(ST.shuffle) shuffle(Q); pos=0; $('#doneBox').hidden=true; $('#studyArea').hidden=false;
+  if(!Q.length){ $('#studyArea').hidden=true; $('#doneBox').hidden=false; $('#doneTxt').textContent = ST.deck==='review' ? 'Không còn thẻ nào cần ôn. Bạn có thể chọn bộ "Tất cả 25 từ".' : 'Bộ thẻ trống.'; }
+  render(); }
+function sentOf(c,s){ return s===2 ? {en:c.s2, vi:c.s2vi, h:c.h2} : {en:c.ex, vi:c.exvi, h:c.h1}; }
+function hl(en,h){ const k=en.indexOf(h); if(k<0) return esc(en); return esc(en.slice(0,k))+'<span class="hl">'+esc(h)+'</span>'+esc(en.slice(k+h.length)); }
+function gapped(en,h){ const k=en.indexOf(h); if(k<0) return esc(en); return esc(en.slice(0,k))+'<span class="gap">'+esc(h)+'</span>'+esc(en.slice(k+h.length)); }
+function targetText(it){ const c=C[it.i]; return ST.mode==='word' ? plain(c.w) : sentOf(c,it.s).en; }
+function grpShort(g){ return g.split(' (')[0]; }
+function render(){
+  renderStats(); renderList();
+  if(!Q.length || pos>=Q.length) return;
+  const it=Q[pos], c=C[it.i]; flipped=false; $('#card').classList.remove('flip');
+  let f='', b='';
+  if(ST.mode==='word'){
+    f=`<span class="grp">${esc(grpShort(c.grp))}</span><div class="big">${esc(c.w)}</div><div class="ipa">${esc(c.ipa)}</div><div class="pos">${esc(c.pos)}</div><div class="tap">Nói nghĩa và đặt một câu · bấm để lật</div>`;
+    b=`<div class="gloss">${esc(c.gloss)}</div><div><b>${esc(c.w)}</b> <span class="ipa" style="font-size:16px">${esc(c.ipa)}</span></div>
+       <div class="ex">📌 ${hl(c.ex,c.h1)}</div><div class="vi">🇻🇳 ${esc(c.exvi)}</div>
+       <div class="box use">💼 ${c.use}</div><div class="box rel">🔗 ${c.rel}</div>`;
+  } else {
+    const S=sentOf(c,it.s);
+    if(ST.mode==='sent'){
+      f=`<span class="grp">Câu ${it.s}/2 · ${esc(grpShort(c.grp))}</span><div class="sent">${gapped(S.en,S.h)}</div><div class="vi">Gợi ý: ${esc(c.gloss)}</div><div class="tap">Đoán cụm còn thiếu, đọc to cả câu · bấm để lật</div>`;
+    } else {
+      f=`<span class="grp">Câu ${it.s}/2 · Dịch sang tiếng Anh</span><div class="sent" style="font-family:var(--ui);font-size:clamp(18px,4.5vw,22px)">🇻🇳 ${esc(S.vi)}</div><div class="vi">Dùng cụm: <b>${esc(c.w)}</b></div><div class="tap">Nói câu tiếng Anh, ghi âm · bấm để lật</div>`;
+    }
+    b=`<div class="sent">${hl(S.en,S.h)}</div><div class="vi">🇻🇳 ${esc(S.vi)}</div><div><b>${esc(c.w)}</b> <span class="ipa" style="font-size:16px">${esc(c.ipa)}</span> = ${esc(c.gloss)}</div><div class="box rel">🔗 ${c.rel}</div>`;
+  }
+  $('#front').innerHTML=f; $('#back').innerHTML=b;
+  $('#posTxt').textContent=`Thẻ ${pos+1}/${Q.length}`;
+  const bx=boxOf(it); $('#deckTxt').textContent = ['Thẻ mới','Lần trước: chưa nhớ','Lần trước: hơi nhớ','Lần trước: nhớ rồi'][bx];
+  $('#rateBox').hidden=true; $('#prevBtn').disabled=pos===0;
+  $('#recRes').hidden=true; $('#playBtn').disabled=!BLOB[idOf(it)];
+  if(BLOB[idOf(it)]) showRes(idOf(it));
+}
+function renderStats(){ const all=itemsFor(ST.mode); const n=[0,0,0,0]; all.forEach(it=>n[boxOf(it)]++);
+  ['n0','n1','n2','n3'].forEach((k,i)=>$('#'+k).textContent=n[i]); $('#barFill').style.width=(n[3]/all.length*100)+'%';
+  window.__known=n[3]; }
+function renderList(){ $('#list').innerHTML=C.map((c,i)=>{ const its=itemsFor(ST.mode).filter(x=>x.i===i); const b=Math.min(...its.map(boxOf)) ;
+  return `<button class="li" data-i="${i}"><span class="dot d${b}"></span>${esc(c.w)}</button>`; }).join(''); }
+function flip(){ if(!Q.length||pos>=Q.length) return; flipped=!flipped; $('#card').classList.toggle('flip',flipped); if(flipped) $('#rateBox').hidden=false; }
+function rateCard(r){ const it=Q[pos]; ST.box[idOf(it)]=r; save();
+  if(r===1) Q.splice(Math.min(pos+4,Q.length),0,it); else if(r===2) Q.push(it);
+  next(true); }
+function next(fromRate){ stopAll(); if(pos<Q.length-1){ pos++; render(); } else if(fromRate || pos===Q.length-1){ pos=Q.length; finish(); } }
+function prev(){ stopAll(); if(pos>0){ pos--; render(); } }
+function finish(){ renderStats(); renderList(); $('#studyArea').hidden=true; $('#doneBox').hidden=false;
+  const all=itemsFor(ST.mode); const k=all.filter(it=>boxOf(it)===3).length, h=all.filter(it=>{const b=boxOf(it);return b===1||b===2;}).length;
+  $('#doneTxt').innerHTML=`Bạn đã nhớ <b>${k}/${all.length}</b> thẻ. Còn <b>${h}</b> thẻ cần ôn lại.`; $('#againHard').disabled=!h; }
+// ===== TTS
+const synth=window.speechSynthesis; let VOICES=[], VOICE=null;
+function loadVoices(){ if(!synth) { $('#voiceSel').innerHTML='<option>Máy không hỗ trợ đọc</option>'; return; }
+  VOICES=synth.getVoices().filter(v=>/^en[-_]/i.test(v.lang)); const sel=$('#voiceSel');
+  if(!VOICES.length){ sel.innerHTML='<option>Giọng mặc định</option>'; return; }
+  const pref=VOICES.findIndex(v=>/en[-_](US|GB)/i.test(v.lang)&&/Google|Natural|Samantha|Daniel|Microsoft/i.test(v.name));
+  sel.innerHTML=VOICES.map((v,i)=>`<option value="${i}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');
+  const k=ST.voice!=null&&VOICES[ST.voice]?ST.voice:(pref>=0?pref:0); sel.value=k; VOICE=VOICES[k]; }
+if(synth){ loadVoices(); synth.onvoiceschanged=loadVoices; }
+$('#voiceSel').onchange=e=>{ VOICE=VOICES[+e.target.value]; ST.voice=+e.target.value; save(); };
+$('#rate').value=ST.rate; $('#rateV').textContent=ST.rate;
+$('#rate').oninput=e=>{ ST.rate=+e.target.value; $('#rateV').textContent=ST.rate; save(); };
+function say(text,slow){ if(!synth){ toast('Trình duyệt này không đọc được. Hãy dùng Chrome hoặc Safari.'); return; }
+  synth.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang=VOICE?VOICE.lang:'en-US'; if(VOICE) u.voice=VOICE; u.rate=slow?Math.max(0.55,ST.rate-0.3):ST.rate; setTimeout(()=>synth.speak(u),30); }
+// ===== Recording
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition; const BLOB={}, HEARD={};
+let REC=null, STREAM=null, RECID=null, recog=null, recTimer=null, AUDIO=null;
+async function startRec(){ if(!navigator.mediaDevices||!window.MediaRecorder){ toast('Máy này không ghi âm được trên trình duyệt. Hãy dùng Chrome.'); return; }
+  try{ if(!STREAM||!STREAM.active) STREAM=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ toast('Chưa mở được micro. Hãy bấm Cho phép (Allow) khi trình duyệt hỏi.'); return; }
+  stopSpeak(); const it=Q[pos]; RECID=idOf(it); const chunks=[]; const target=targetText(it);
+  REC=new MediaRecorder(STREAM); REC.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  REC.onstop=()=>{ const id=RECID; const b=new Blob(chunks,{type:REC.mimeType||'audio/webm'}); if(BLOB[id]) URL.revokeObjectURL(BLOB[id]); BLOB[id]=URL.createObjectURL(b); REC=null; clearTimeout(recTimer);
+    $('#recBtn').classList.remove('on'); $('#recBtn').textContent='🎙 Ghi âm lại'; if(Q[pos]&&idOf(Q[pos])===id){ $('#playBtn').disabled=false; } setTimeout(()=>showRes(id),SR?700:0); };
+  REC.start(); $('#recBtn').classList.add('on'); $('#recBtn').textContent='⏹ Dừng ghi'; HEARD[RECID]=null;
+  if(SR){ try{ recog=new SR(); recog.lang='en-US'; recog.interimResults=false; recog.maxAlternatives=1; const id=RECID;
+      recog.onresult=e=>{ HEARD[id]=Array.from(e.results).map(r=>r[0].transcript).join(' '); }; recog.onerror=()=>{}; recog.onend=()=>{ if(Q[pos]&&idOf(Q[pos])===id&&!REC) showRes(id); }; recog.start(); }catch(e){ recog=null; } }
+  recTimer=setTimeout(stopRec, (ST.mode==='word'?8:18)*1000); }
+function stopRec(){ if(REC&&REC.state!=='inactive') REC.stop(); if(recog){ try{recog.stop();}catch(e){} recog=null; } }
+function norm(s){ return String(s).toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g,' ').split(/\s+/).filter(Boolean); }
+function showRes(id){ const r=$('#recRes'); r.hidden=false; const it=Q[pos]; if(!it||idOf(it)!==id) return;
+  const target=targetText(it); const heard=HEARD[id];
+  if(!SR){ r.innerHTML='🎧 Đã ghi âm. Bấm <b>▶ Nghe lại giọng tôi</b> rồi <b>🔊 Nghe mẫu</b> để so sánh. (Trình duyệt này chưa chấm tự động; dùng Chrome để được chấm.)'; return; }
+  if(heard==null){ r.innerHTML='🎧 Đã ghi âm. Máy chưa nghe rõ, hãy nói to và rõ hơn, hoặc nghe lại và tự so với mẫu.'; return; }
+  const T=norm(target), H=norm(heard); const pool=H.slice(); let ok=0; const miss=[];
+  T.forEach(w=>{ const k=pool.indexOf(w); if(k>=0){ ok++; pool.splice(k,1);} else miss.push(w); });
+  const pct=Math.round(ok/T.length*100);
+  r.innerHTML=`🎧 Máy nghe được: <i>“${esc(heard)}”</i><br>Khớp <b>${pct}%</b> ${pct>=90?'✅ Rất tốt!':pct>=60?'👍 Khá tốt, thử lại cho rõ hơn.':'🔁 Nghe mẫu rồi thử lại nhé.'}${miss.length?`<br>Từ chưa rõ: <span class="miss">${miss.map(esc).join(', ')}</span>`:''}`; }
+function play(){ const it=Q[pos]; const u=BLOB[idOf(it)]; if(!u) return; stopSpeak(); if(AUDIO) AUDIO.pause(); AUDIO=new Audio(u); AUDIO.play().catch(()=>toast('Không phát được bản ghi.')); }
+function stopSpeak(){ if(synth) synth.cancel(); }
+function stopAll(){ stopSpeak(); if(REC) stopRec(); if(AUDIO) AUDIO.pause(); }
+// ===== UI wiring
+function setMode(m){ ST.mode=m; save(); document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.m===m)); $('#modeHelp').textContent=HELP[m]; stopAll(); startDeck(); }
+function fillDeck(){ const sel=$('#deckSel'); sel.innerHTML=`<option value="all">Tất cả 25 từ</option>${GROUPS.map((g,i)=>`<option value="${i}">${esc(grpShort(g))}</option>`).join('')}<option value="review">Cần ôn lại (chưa nhớ / hơi nhớ)</option>`; sel.value=ST.deck; }
+$('#modeSeg').onclick=e=>{ const b=e.target.closest('button'); if(b) setMode(b.dataset.m); };
+$('#deckSel').onchange=e=>{ ST.deck=e.target.value; save(); startDeck(); };
+$('#shufBtn').onclick=()=>{ ST.shuffle=!ST.shuffle; save(); $('#shufBtn').setAttribute('aria-pressed',ST.shuffle); $('#shufBtn').classList.toggle('primary',ST.shuffle); startDeck(); };
+$('#card').onclick=flip; $('#flipBtn').onclick=flip;
+$('#card').onkeydown=e=>{ if(e.key==='Enter'){ e.preventDefault(); flip(); } };
+$('#rateBox').onclick=e=>{ const b=e.target.closest('[data-r]'); if(b) rateCard(+b.dataset.r); };
+$('#nextBtn').onclick=()=>next(false); $('#prevBtn').onclick=prev;
+$('#sayBtn').onclick=()=>{ if(Q[pos]) say(targetText(Q[pos])); }; $('#slowBtn').onclick=()=>{ if(Q[pos]) say(targetText(Q[pos]),true); };
+$('#recBtn').onclick=()=>{ if(REC) stopRec(); else startRec(); }; $('#playBtn').onclick=play;
+$('#againHard').onclick=()=>{ ST.deck='review'; save(); $('#deckSel').value='review'; startDeck(); };
+$('#againAll').onclick=()=>{ ST.deck='all'; save(); $('#deckSel').value='all'; startDeck(); };
+$('#list').onclick=e=>{ const b=e.target.closest('.li'); if(!b) return; const i=+b.dataset.i; ST.deck='all'; $('#deckSel').value='all'; save();
+  Q=itemsFor(ST.mode); pos=Q.findIndex(x=>x.i===i); $('#doneBox').hidden=true; $('#studyArea').hidden=false; render(); $('#studyArea').scrollIntoView({behavior:'smooth',block:'start'}); };
+$('#resetBtn').onclick=()=>{ Object.keys(ST.box).forEach(k=>{ if(k.startsWith(ST.mode+':')) delete ST.box[k]; }); save(); startDeck(); toast('Đã xóa tiến độ của loại thẻ này.'); };
+document.addEventListener('keydown',e=>{ if(/input|select|textarea/i.test(e.target.tagName)) return;
+  if(e.key===' '){ e.preventDefault(); flip(); } else if(e.key==='ArrowRight') next(false); else if(e.key==='ArrowLeft') prev();
+  else if(['1','2','3'].includes(e.key)&&flipped) rateCard(+e.key); else if(e.key==='r'||e.key==='R'){ if(REC) stopRec(); else startRec(); } else if(e.key==='s'||e.key==='S'){ if(Q[pos]) say(targetText(Q[pos])); } });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAll(); });
+fillDeck(); $('#shufBtn').setAttribute('aria-pressed',ST.shuffle); $('#shufBtn').classList.toggle('primary',ST.shuffle);
+setMode(ST.mode); window.__ready=true;
+</script>
+</body>
+</html>
